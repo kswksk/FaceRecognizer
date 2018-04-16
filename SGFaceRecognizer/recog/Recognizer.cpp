@@ -14,9 +14,9 @@ Recognizer::Recognizer(const vector<Mat> imgs, const vector<int> labels, int rad
     // for (vector<int>::iterator it = labels.begin(); it != labels.end(); *(it++) = PERSON_LABEL);
     
     _faceSize = cv::Size(imgs[0].size().width, imgs[0].size().height);
-    _model = LBPHFaceRecognizer::create(radius, neighbors, grid_x, grid_y, threshold);
+    //_model = LBPHFaceRecognizer::create(radius, neighbors, grid_x, grid_y, threshold);
     // _model = EigenFaceRecognizer::create();
-    // _model = FisherFaceRecognizer::create();
+    _model = FisherFaceRecognizer::create();
     _model->train(imgs, labels);
 }
 

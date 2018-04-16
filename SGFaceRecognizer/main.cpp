@@ -201,10 +201,12 @@ void recognitionVideo() {
     vector<Mat> training_set;
     vector<int> training_label;
     
+    string labelNames[] = {"kimsg", "obama"};
+    
     string output_list = format("%s/%s", executePath.c_str(), OUTPUT_LIST);
-    read_recog_data(output_list, training_set, training_label, 10);
+    read_recog_data(output_list, training_set, training_label, 1);
     output_list = format("%s/%s", executePath.c_str(), KIMSG_OUTPUT_LIST);
-    read_recog_data(output_list, training_set, training_label, 99);
+    read_recog_data(output_list, training_set, training_label, 0);
     
     Recognizer rec(training_set, training_label);
     vector<cv::Rect> faces;
@@ -239,6 +241,8 @@ void recognitionVideo() {
             }
             
             rectangle(frameMat, cvPoint(face->x, face->y), cvPoint(face->x+face->width, face->y+face->height), color);
+            
+            putText(frameMat, labelNames[label], cvPoint(face->x, face->y-8), FONT, SCALE_TITLE, FONT_COLOR, THICKNESS_TITLE, LINE_TYPE);
         }
         
         imshow(WINDOW_NAME, frameMat);
@@ -247,6 +251,8 @@ void recognitionVideo() {
             break;
         }
     }
+    
+    cvReleaseCapture(&camera);
 }
 
 int main(int argc, const char * argv[]) {
@@ -267,8 +273,8 @@ int main(int argc, const char * argv[]) {
 
 #ifndef TRADING_MAKE_IMG
     // recognition(format("%s/%s", executePath.c_str(), "resources/sample_img/IMG_0138.JPG"));
-    recognition(format("%s/%s", executePath.c_str(), "resources/sample_img/obama_15.JPG"));
-    // recognitionVideo();
+    // recognition(format("%s/%s", executePath.c_str(), "resources/sample_img/obama_15.JPG"));
+    recognitionVideo();
 #endif
     
     return 0;
